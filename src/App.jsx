@@ -18,7 +18,7 @@ function App() {
         <div>
           <h1>Flipped View</h1>
           <img
-            src={`https://cube.rider.biz/visualcube.php?fmt=svg&size=300&view=trans&r=y45x-215&fd=${cubeStringified.toLowerCase()}`}
+            src={`https://cube.rider.biz/visualcube.php?fmt=svg&size=300&view=trans&r=y45x-215z180&fd=${cubeStringified.toLowerCase()}`}
           />
         </div>
       </div>
@@ -35,9 +35,7 @@ function CubeState({ cubeState }) {
       <h1>Cube State</h1>
       <div id="cube-state">
         {cubeState.map((rows) =>
-          rows.map((face, i) => {
-            return <CubeRow key={`row${i + 1}`} cubeFace={face} i={i} />;
-          })
+          rows.map((face, i) => <CubeRow key={`row${i + 1}`} cubeFace={face} />)
         )}
       </div>
     </>
@@ -45,7 +43,7 @@ function CubeState({ cubeState }) {
 }
 
 // type cubeFace = 'U[1-9]' | 'D[1-9]' | 'L[1-9]' | 'R[1-9]' | 'F[1-9]' | 'B[1-9]'
-function CubeRow({ cubeFace, i }) {
+function CubeRow({ cubeFace }) {
   const getFaceClass = (face) => {
     switch (face[0]) {
       case "U":
@@ -67,13 +65,12 @@ function CubeRow({ cubeFace, i }) {
 
   return (
     <section
-      key={`row${i + 1}`}
       className={`cube-face ${
         cubeFace[0] ? getFaceClass(cubeFace[0]) : "empty-face"
       }`}
     >
-      {cubeFace.map((cell, j) => (
-        <span key={`cell${j + 1}`} className="cube-cell">
+      {cubeFace.map((cell, i) => (
+        <span key={`cell${i + 1}`} className="cube-cell">
           {cell ?? ""}
         </span>
       ))}
