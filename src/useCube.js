@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Cube from "cubejs/lib/cube"; // https://github.com/ldez/cubejs
 
+// this array structure is for rendering the cube state as a grid layout
 const defaultCubeState = [
   [
     [null, null, null, null, null, null, null, null, null],
@@ -25,8 +26,6 @@ const defaultCubeState = [
 const useCube = () => {
   const [cubeState, setCubeState] = useState(defaultCubeState ?? []);
   const cube = useMemo(() => new Cube(), []);
-  // cubeStringified ex: UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB
-  const cubeStringified = cube.asString();
 
   useEffect(() => {
     updateCube();
@@ -39,10 +38,12 @@ const useCube = () => {
 
   const updateCube = () => {
     const updatedCube = [...cubeState];
-    // process 6 faces on the cube
-    for (let i = 0; i < 6; i++) {
-      const face = cubeStringified
-        .slice(i, i + 9) // each face has the 9 cells, represented as a substring of cubeStringified
+    // process 6 faces of cube
+    for (let i = 0; i <= 54; i += 9) {
+      // stringified cube state ex: UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB
+      const face = cube
+        .asString()
+        .slice(i, i + 9) // each face has the 9 cells, represented by a substring of above
         .split("")
         .map((char, i) => `${char}${i + 1}`);
 
@@ -65,7 +66,7 @@ const useCube = () => {
   return {
     cube,
     cubeState,
-    cubeStringified,
+    cubeStringified: cube.asString(),
     rotateCube,
     randomizeCube,
   };
